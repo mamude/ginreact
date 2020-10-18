@@ -1,0 +1,66 @@
+version: "3"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    image: golangreact_api:dev
+    container_name: api
+    env_file: .env
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=apps
+      - traefik.http.routers.api.rule=Host(`api-rubyonrails-react-template`)
+      - traefik.http.routers.api.rule=PathPrefix(`/api/v1`)
+    volumes:
+      - ./server:/go/src/github.com/mamude/ginreact
+    ports:
+      - 3000:3000
+    networks:
+      - apps
+
+  client:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    image: golangreact_client:dev
+    container_name: client
+    env_file: .env
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=apps
+      - traefik.http.routers.client.rule=Host(`client-rubyonrails-react-template`)
+      - traefik.http.routers.client.rule=PathPrefix(`/`)
+    volumes:
+      - ./client:/var/www/client
+      - /var/www/client/node_modules
+    ports:
+      - 5000:5000
+    links:
+      - api
+    depends_on:
+      - api
+    networks:
+      - apps
+
+  reverse-proxy:
+    image: traefik:v2.3
+    container_name: reverse_proxy
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - apps
+
+volumes:
+  postgres:
+networks:
+  apps:
+    driver: bridge

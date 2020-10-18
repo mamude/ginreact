@@ -1,0 +1,5 @@
+.dockerignore
+Dockerfile.server
+Dockerfile.client
+docker-compose.yml
+client/node_modules

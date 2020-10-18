@@ -1,0 +1,15 @@
+FROM node:12-alpine3.12
+
+RUN apk update && apk upgrade && apk add --update --no-cache tzdata zsh
+ENV SKIP_PREFLIGHT_CHECK=true
+
+WORKDIR /var/www/client
+ENV PATH=/var/www/client/node_modules/.bin:$PATH
+
+COPY ./client/package.json ./client/yarn.lock ./
+COPY ./client ./
+
+# Node Entrypoint
+COPY docker-react.sh /usr/bin
+RUN chmod +x /usr/bin/docker-react.sh
+ENTRYPOINT [ "docker-react.sh" ]

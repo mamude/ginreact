@@ -1,0 +1,13 @@
+FROM golang:alpine
+
+ARG GO_ROOT=/go/src/github.com/mamude/ginreact
+ENV TZ America/Sao_Paulo
+
+RUN apk add --update --no-cache build-base gcc git sqlite tzdata zsh
+RUN go get github.com/codegangsta/gin
+
+WORKDIR $GO_ROOT
+
+COPY ./server ./
+
+CMD [ "gin", "run", "main.go", "--all" ]
