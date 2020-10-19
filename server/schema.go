@@ -12,7 +12,15 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
+var rootMutation = graphql.NewObject(graphql.ObjectConfig{
+	Name: "RootMutation",
+	Fields: graphql.Fields{
+		"createCompany": CompanyCreateMutation,
+	},
+})
+
 // CompanySchema Graphql Schema
 var CompanySchema, _ = graphql.NewSchema(graphql.SchemaConfig{
-	Query: rootQuery,
+	Query:    rootQuery,
+	Mutation: rootMutation,
 })
