@@ -19,7 +19,7 @@ func main() {
 		v1.POST("/login", controllers.LoginUser)
 
 		// companies
-		v1.GET("/companies", controllers.ListCompanies)
+		v1.GET("/companies", TokenAuthMiddleware(), controllers.ListCompanies)
 	}
 	// starts Gin
 	router.Run()

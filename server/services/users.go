@@ -45,7 +45,7 @@ func extractToken(r *http.Request) string {
 	return ""
 }
 
-func VerifyToken(r *http.Request) (string, int) {
+func verifyToken(r *http.Request) (*jwt.Token, error) {
 	tokenString := extractToken(r)
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
@@ -54,14 +54,25 @@ func VerifyToken(r *http.Request) (string, int) {
 
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {
-			return "", http.StatusBadRequest
+			return token, err
 		}
-		return "", http.StatusBadRequest
+		return token, err
 	}
 	if !token.Valid {
-		return "", http.StatusBadRequest
+		return token, err
 	}
-	return token.Raw, http.StatusOK
+	return token, nil
+}
+
+func TokenValid(r *http.Request) error {
+	token, err := verifyToken(r)
+	if err != nil {
+		return err
+	}
+	if !token.Valid {
+		return err
+	}
+	return nil
 }
 
 func Authentication(username, password string) models.User {
