@@ -10,4 +10,7 @@ WORKDIR $GO_ROOT
 
 COPY ./server ./
 
-CMD [ "gin", "run", "main.go", "--all" ]
+# Node Entrypoint
+COPY docker-go.sh /usr/bin
+RUN chmod +x /usr/bin/docker-go.sh
+ENTRYPOINT [ "docker-go.sh" ]
