@@ -8,7 +8,7 @@ var companyType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Company",
 	Fields: graphql.Fields{
 		"id": &graphql.Field{
-			Type: graphql.String,
+			Type: graphql.Int,
 		},
 		"openingYear": &graphql.Field{
 			Type: graphql.Int,

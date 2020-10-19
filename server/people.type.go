@@ -8,7 +8,7 @@ var personType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Person",
 	Fields: graphql.Fields{
 		"id": &graphql.Field{
-			Type: graphql.String,
+			Type: graphql.Int,
 		},
 		"age": &graphql.Field{
 			Type: graphql.Int,
