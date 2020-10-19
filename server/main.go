@@ -10,12 +10,17 @@ import (
 func main() {
 	// database connection
 	models.OpenConnection()
-
 	// routes
 	router := gin.Default()
-	router.GET("/seed", controllers.SeedData)
-	router.POST("/login", controllers.LoginUser)
+	// grouping routes
+	v1 := router.Group("/api/v1")
+	{
+		v1.GET("/seed", controllers.SeedData)
+		v1.POST("/login", controllers.LoginUser)
 
+		// companies
+		v1.GET("/companies", controllers.ListCompanies)
+	}
 	// starts Gin
 	router.Run()
 }

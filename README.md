@@ -1,4 +1,4 @@
-# Template: Gin Gonic (Golang) / React Integration
+# Gin Gonic (Golang) / React Integration
 
 ### Docker & Docker Composer Instalation
 
@@ -36,6 +36,9 @@ http://localhost/api/v1
 - SQLite
 - Traefik (reverse-proxy)
 - Gin Gonic
+- GORM
+- JWT
+- BCrypt
 - React 16
 - React Router Dom
 - Axios
