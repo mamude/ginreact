@@ -12,11 +12,12 @@ func main() {
 	// grouping routes
 	v1 := router.Group("/api/v1")
 	{
+		// Seed Data
 		v1.GET("/seed", SeedDataHandler)
+		// Authentication
 		v1.POST("/login", LoginUserHandler)
-
-		// companies
-		v1.GET("/companies", TokenAuthMiddleware(), ListCompaniesHandler)
+		// GraphQL Integration
+		v1.POST("/query", TokenAuthMiddleware(), GraphQlMiddleware())
 	}
 	// starts Gin
 	router.Run()

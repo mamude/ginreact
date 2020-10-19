@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/graphql-go/handler"
 	"net/http"
 )
 
@@ -15,5 +16,18 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 			return
 		}
 		c.Next()
+	}
+}
+
+// GraphQlMiddleware middlerare
+func GraphQlMiddleware() gin.HandlerFunc {
+	h := handler.New(&handler.Config{
+		Schema:     &CompanySchema,
+		Pretty:     true,
+		GraphiQL:   false,
+		Playground: true,
+	})
+	return func(c *gin.Context) {
+		h.ServeHTTP(c.Writer, c.Request)
 	}
 }

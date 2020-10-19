@@ -24,7 +24,7 @@ func OpenConnection() {
 		},
 	)
 
-	database, err := gorm.Open(sqlite.Open("movies.db"), &gorm.Config{
+	database, err := gorm.Open(sqlite.Open("./db/companies.db"), &gorm.Config{
 		Logger: newLogger,
 	})
 	if err != nil {
