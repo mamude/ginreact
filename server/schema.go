@@ -8,6 +8,7 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
 		"companies": CompanyQuery,
+		"people":    PersonQuery,
 	},
 })
 

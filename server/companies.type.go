@@ -7,6 +7,9 @@ import (
 var companyType = graphql.NewObject(graphql.ObjectConfig{
 	Name: "Company",
 	Fields: graphql.Fields{
+		"id": &graphql.Field{
+			Type: graphql.String,
+		},
 		"openingYear": &graphql.Field{
 			Type: graphql.Int,
 		},
@@ -19,10 +22,9 @@ var companyType = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
-// CompanyQuery query object
+// CompanyQuery object
 var CompanyQuery = &graphql.Field{
-	Type:        graphql.NewList(companyType),
-	Description: "List Companies",
+	Type: graphql.NewList(companyType),
 	Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 		companies := ListCompaniesService()
 		return companies, nil
