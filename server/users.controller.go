@@ -7,6 +7,7 @@ import (
 
 // LoginRequest - post request
 type LoginRequest struct {
+	ID       int    `json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
@@ -21,4 +22,12 @@ func LoginUserHandler(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"token": user.Token, "username": user.Username})
+}
+
+// LogoutUserHandler action
+func LogoutUserHandler(c *gin.Context) {
+	var loginRequest LoginRequest
+	c.BindJSON(&loginRequest)
+	LogoutService(loginRequest.ID, loginRequest.Username)
+	c.JSON(http.StatusOK, gin.H{"message": "logout..."})
 }

@@ -3,14 +3,18 @@ package main
 import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+	"time"
 )
 
 // User model
 type User struct {
-	gorm.Model
-	Username string
-	Password string
-	Token    string
+	ID        int `gorm:"primaryKey"`
+	Username  string
+	Password  string
+	Token     string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 // HashPassword encrypt user password
