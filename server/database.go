@@ -32,6 +32,16 @@ func OpenConnection() {
 	}
 
 	// Migrate the schema
-	database.AutoMigrate(&Company{}, &Person{}, &Role{}, &User{})
+	database.AutoMigrate(
+		&Customer{},
+		&Company{},
+		&Market{},
+		&Order{},
+		&OrderItem{},
+		&Person{},
+		&Product{},
+		&Role{},
+		&ShoppingCart{},
+		&User{})
 	DB = database
 }

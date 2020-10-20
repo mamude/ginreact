@@ -12,7 +12,8 @@ func main() {
 	// grouping routes
 	v1 := app.Group("/api/v1")
 	{
-		// Seed Data
+		// Reset & Seed Data
+		v1.GET("/reset", ResetDatabaseHandler)
 		v1.GET("/seed", SeedDataHandler)
 		// Authentication & Logout
 		v1.POST("/login", LoginUserHandler)
