@@ -7,18 +7,19 @@ import (
 func main() {
 	// database connection
 	OpenConnection()
-	// routes
+	// init app
 	app := gin.Default()
 	// grouping routes
 	v1 := app.Group("/api/v1")
 	{
 		// Seed Data
 		v1.GET("/seed", SeedDataHandler)
-		// Authentication
+		// Authentication & Logout
 		v1.POST("/login", LoginUserHandler)
+		v1.POST("/logout", TokenAuthMiddleware(), LogoutUserHandler)
 		// GraphQL Integration
 		v1.POST("/query", TokenAuthMiddleware(), GraphQlMiddleware())
 	}
-	// starts Gin
+	// starts
 	app.Run()
 }

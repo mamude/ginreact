@@ -25,7 +25,7 @@ func GraphQlMiddleware() gin.HandlerFunc {
 		Schema:     &CompanySchema,
 		Pretty:     true,
 		GraphiQL:   false,
-		Playground: true,
+		Playground: false,
 	})
 	return func(c *gin.Context) {
 		h.ServeHTTP(c.Writer, c.Request)

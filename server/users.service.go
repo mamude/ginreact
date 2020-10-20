@@ -1,7 +1,9 @@
 package main
 
 import (
+	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"gorm.io/gorm"
 	"net/http"
 	"os"
 	"strings"
@@ -41,7 +43,14 @@ func extractToken(r *http.Request) string {
 	bearToken := r.Header.Get("Authorization")
 	strArr := strings.Split(bearToken, " ")
 	if len(strArr) == 2 {
-		return strArr[1]
+		token := strArr[1]
+		// validate token on database
+		user := User{}
+		err := DB.Where(&User{Token: token}).First(&user).Error
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return ""
+		}
+		return token
 	}
 	return ""
 }
@@ -89,4 +98,12 @@ func AuthenticationService(username, password string) User {
 		return user
 	}
 	return User{}
+}
+
+// LogoutService service
+func LogoutService(id int, username string) {
+	user := User{}
+	DB.Where(&User{ID: id, Username: username}).First(&user)
+	user.Token = ""
+	DB.Save(&user)
 }
