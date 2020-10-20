@@ -113,7 +113,7 @@ var CompanyUpdateMutation = &graphql.Field{
 			return nil, errors.New(err.Error())
 		}
 
-		company := &Company{}
+		company := Company{}
 		DB.First(&company, id)
 		company.Name = &companyDto.Name
 		company.Description = companyDto.Description
@@ -124,5 +124,24 @@ var CompanyUpdateMutation = &graphql.Field{
 		}
 
 		return company, nil
+	},
+}
+
+// CompanyDeleteMutation object
+var CompanyDeleteMutation = &graphql.Field{
+	Type: companyType,
+	Args: graphql.FieldConfigArgument{
+		"id": &graphql.ArgumentConfig{
+			Type: graphql.NewNonNull(graphql.Int),
+		},
+	},
+	Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+		id, _ := params.Args["id"].(int)
+
+		if err := DB.Delete(&Company{}, id).Error; err != nil {
+			return nil, errors.New(err.Error())
+		}
+
+		return nil, nil
 	},
 }

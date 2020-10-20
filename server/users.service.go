@@ -20,7 +20,7 @@ type Claims struct {
 
 func createJwtToken(user User) (string, error) {
 	var err error
-	expirationTime := time.Now().Add(1 * time.Hour)
+	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
 		ID:       user.ID,
 		Username: user.Username,

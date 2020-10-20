@@ -15,8 +15,14 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 var rootMutation = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootMutation",
 	Fields: graphql.Fields{
+		// company mutations
 		"createCompany": CompanyCreateMutation,
 		"updateCompany": CompanyUpdateMutation,
+		"deleteCompany": CompanyDeleteMutation,
+		// person mutations
+		"createPerson": PersonCreateMutation,
+		"updatePerson": PersonUpdateMutation,
+		"deletePerson": PersonDeleteMutation,
 	},
 })
 
