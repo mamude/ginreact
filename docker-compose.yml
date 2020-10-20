@@ -34,8 +34,6 @@ services:
     networks:
       - apps
 
-volumes:
-  postgres:
 networks:
   apps:
     driver: bridge

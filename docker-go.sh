@@ -2,4 +2,4 @@
 
 set -e
 
-gin run main.go --all
+gin --all -i run main.go
