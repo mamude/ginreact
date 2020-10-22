@@ -1,9 +1,10 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/brianvoe/gofakeit/v5"
 	"github.com/gin-gonic/gin"
-	"strings"
 )
 
 func resetTables() {
@@ -16,6 +17,8 @@ func resetTables() {
 	DB.Exec("DELETE FROM shopping_carts;")
 	DB.Exec("DELETE FROM products;")
 	DB.Exec("DELETE FROM markets;")
+	DB.Exec("DELETE FROM categories;")
+	DB.Exec("DELETE FROM category_businesses;")
 	DB.Exec("DELETE FROM customers;")
 }
 
@@ -25,21 +28,56 @@ func seedTables() {
 	hash, _ := HashPassword(password)
 	DB.Create(&User{Username: "admin", Password: hash})
 
+	// create category business
+	categoryBusiness := []CategoryBusiness{
+		{Name: "Category 1"},
+		{Name: "Category 2"},
+		{Name: "Category 3"},
+		{Name: "Category 4"},
+		{Name: "Category 5"},
+		{Name: "Category 6"},
+		{Name: "Category 7"},
+		{Name: "Category 8"},
+		{Name: "Category 9"},
+		{Name: "Category 10"},
+	}
+	DB.Create(&categoryBusiness)
+
 	// create markets
 	for i := 0; i < 20; i++ {
+		categoryBusiness := CategoryBusiness{}
+		DB.First(&categoryBusiness, gofakeit.Number(1, 10))
 		appName := gofakeit.AppName()
 		DB.Create(&Market{
-			Name:        &appName,
-			Description: gofakeit.Phrase(),
-			Email:       gofakeit.Email(),
-			URL:         gofakeit.URL(),
-			Phone:       gofakeit.Phone(),
+			CategoryBusinessID: categoryBusiness.ID,
+			Name:               &appName,
+			Description:        gofakeit.Phrase(),
+			Email:              gofakeit.Email(),
+			URL:                gofakeit.URL(),
+			Phone:              gofakeit.Phone(),
 		})
 	}
+
+	// create categories
+	categories := []Category{
+		{Name: "Category 1"},
+		{Name: "Category 2"},
+		{Name: "Category 3"},
+		{Name: "Category 4"},
+		{Name: "Category 5"},
+		{Name: "Category 6"},
+		{Name: "Category 7"},
+		{Name: "Category 8"},
+		{Name: "Category 9"},
+		{Name: "Category 10"},
+	}
+	DB.Create(&categories)
 
 	// create products
 	for i := 0; i < 100; i++ {
 		market := Market{}
+		category := Category{}
+		DB.First(&category, gofakeit.Number(1, 10))
 		DB.First(&market, gofakeit.Number(1, 10))
 		productName := []string{
 			gofakeit.BeerName(),
@@ -51,6 +89,7 @@ func seedTables() {
 			gofakeit.Snack(),
 		}
 		DB.Create(&Product{
+			CategoryID:  category.ID,
 			MarketID:    market.ID,
 			Name:        gofakeit.RandomString(productName),
 			Description: gofakeit.LoremIpsumSentence(50),

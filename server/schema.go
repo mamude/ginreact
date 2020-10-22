@@ -7,6 +7,7 @@ import (
 var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
+		"markets":   MarketListQuery,
 		"companies": CompanyQuery,
 		"people":    PersonQuery,
 	},

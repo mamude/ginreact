@@ -13,7 +13,7 @@ import logo from './images/logo.png'
 import shop from './images/image.png'
 
 const GridColumn = styled(Grid.Column)`
-  height: 50px;
+  height: 70px;
 `
 
 const Buttons = styled.div`
@@ -23,7 +23,7 @@ const Buttons = styled.div`
 const Logo = styled.img`
   object-fit: cover;
   width: 120px;
-  height: 50px;
+  height: 70px;
   margin-top: 5px;
 `
 
@@ -39,7 +39,7 @@ const ShopName = styled.div`
 const ShopDetail = styled.div`
   margin-top: 5px;
   font-size: 0.8rem;
-  color: #b0adad;
+  color: #a5a1a1;
 `
 const RatingPointuation = styled.strong`
   color: orange;

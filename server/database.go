@@ -33,6 +33,8 @@ func OpenConnection() {
 
 	// Migrate the schema
 	database.AutoMigrate(
+		&Category{},
+		&CategoryBusiness{},
 		&Customer{},
 		&Company{},
 		&Market{},
