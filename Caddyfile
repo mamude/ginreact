@@ -1,0 +1,4 @@
+http://localhost
+
+reverse_proxy client:5000
+reverse_proxy /api/v1/* api:3000

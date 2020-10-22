@@ -37,6 +37,18 @@ var marketType = graphql.NewObject(graphql.ObjectConfig{
 		"phone": &graphql.Field{
 			Type: graphql.String,
 		},
+		"rating": &graphql.Field{
+			Type: graphql.Float,
+		},
+		"distance": &graphql.Field{
+			Type: graphql.Float,
+		},
+		"deliveryTime": &graphql.Field{
+			Type: graphql.String,
+		},
+		"deliveryTax": &graphql.Field{
+			Type: graphql.Float,
+		},
 		"categoryBusiness": &graphql.Field{
 			Type: categoryBusinessType,
 		},

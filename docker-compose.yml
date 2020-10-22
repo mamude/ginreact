@@ -34,6 +34,22 @@ services:
     networks:
       - apps
 
+  reverse_proxy:
+    image: caddy:2.1.1-alpine
+    container_name: reverse_proxy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - 80:80
+    links:
+      - api
+      - client
+    depends_on:
+      - api
+      - client
+    networks:
+      - apps
+
 networks:
   apps:
     driver: bridge

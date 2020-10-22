@@ -34,16 +34,18 @@ http://localhost/api/v1
 ### Frameworks / Libraries
 
 - SQLite
-- Traefik (reverse-proxy)
+- Caddy Server (reverse-proxy)
 - Gin Gonic
 - GORM
 - JWT
 - BCrypt
+- GraphQL
 - React 16
 - React Router Dom
+- Apollo Client
 - Axios
-- Eslint
 - Airbnb
+- Eslint
 - Eslint Airbnb
 - Eslint React
 - Eslint Prettier
