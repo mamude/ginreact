@@ -16,6 +16,10 @@ type Market struct {
 	URL                string
 	Email              string
 	Phone              string
+	Rating             float64
+	Distance           float64
+	DeliveryTime       string
+	DeliveryTax        float64
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
 	DeletedAt          gorm.DeletedAt `gorm:"index"`

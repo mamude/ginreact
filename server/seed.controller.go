@@ -45,9 +45,9 @@ func seedTables() {
 
 	// create markets
 	for i := 0; i < 20; i++ {
+		appName := gofakeit.AppName()
 		categoryBusiness := CategoryBusiness{}
 		DB.First(&categoryBusiness, gofakeit.Number(1, 10))
-		appName := gofakeit.AppName()
 		DB.Create(&Market{
 			CategoryBusinessID: categoryBusiness.ID,
 			Name:               &appName,
@@ -55,6 +55,10 @@ func seedTables() {
 			Email:              gofakeit.Email(),
 			URL:                gofakeit.URL(),
 			Phone:              gofakeit.Phone(),
+			Rating:             gofakeit.Float64Range(1, 5),
+			Distance:           gofakeit.Float64Range(1, 6),
+			DeliveryTime:       "30-40min",
+			DeliveryTax:        gofakeit.Price(1, 6),
 		})
 	}
 
