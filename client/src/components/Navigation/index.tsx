@@ -1,13 +1,11 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import LoginPage from './LoginPage'
-import HomePage from './Home'
+import HomePage from '../../container/HomePage/index'
 
 const Navigation: React.FC = () => {
   return (
     <Switch>
-      <Route exact path="/" component={LoginPage} />
-      <Route exact path="/home" component={HomePage} />
+      <Route exact path="/" component={HomePage} />
     </Switch>
   )
 }

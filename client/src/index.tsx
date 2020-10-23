@@ -1,16 +1,15 @@
 import React from 'react'
+import 'fontsource-roboto'
 import ReactDOM from 'react-dom'
 import { ApolloProvider } from '@apollo/client'
-import App from './App'
+import { CssBaseline } from '@material-ui/core'
+import App from './container/App'
 import Graphql from './utils/graphql'
-import 'semantic-ui-css/semantic.min.css'
-import './index.css'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ApolloProvider client={Graphql}>
-      <App />
-    </ApolloProvider>
-  </React.StrictMode>,
+  <ApolloProvider client={Graphql}>
+    <CssBaseline />
+    <App />
+  </ApolloProvider>,
   document.getElementById('root'),
 )
