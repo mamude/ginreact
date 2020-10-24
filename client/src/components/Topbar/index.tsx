@@ -1,18 +1,25 @@
 import React from 'react'
-import { AppBar, Button, IconButton, Toolbar } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
-import { Root, ShoppingName } from './style'
+import { AppBar, Box, Button, Hidden, Toolbar } from '@material-ui/core'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket'
+import { ImgLogo, Root, TopButtons } from './style'
+import logo from '../../images/logo.png'
 
 const Topbar: React.FC = () => {
   return (
     <Root>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <ShoppingName variant="h6">E-commerce</ShoppingName>
-          <Button color="inherit">Login</Button>
+          <ImgLogo src={logo} alt="Samir Mamude" />
+          <Hidden mdDown>
+            <Box flexGrow={1} />
+            <Button color="inherit" startIcon={<ExitToAppIcon />}>
+              Entrar
+            </Button>
+            <Button color="inherit" startIcon={<ShoppingBasketIcon />}>
+              Sacola
+            </Button>
+          </Hidden>
         </Toolbar>
       </AppBar>
     </Root>

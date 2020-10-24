@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex: 1 1 auto;
   overflow: hidden;
-  padding-top: 64px;
+  padding-top: 45px;
 `
 
 export const ContentContainer = styled.div`
