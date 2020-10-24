@@ -1,9 +1,5 @@
 import styled from 'styled-components'
-import { TextField, Typography } from '@material-ui/core'
-
-export const Root = styled.div`
-  flex-grow: 1;
-`
+import { Typography } from '@material-ui/core'
 
 export const TopButtons = styled.div`
   margin-left: 20px;
