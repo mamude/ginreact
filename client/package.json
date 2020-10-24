@@ -17,6 +17,7 @@
     "react-hook-form": "^6.9.6",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "secure-ls": "^1.2.6",
     "styled-components": "^5.2.0",
     "yup": "^0.29.3"
   },

@@ -1,15 +1,12 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { ThemeProvider } from '@material-ui/core'
 import { Content, ContentContainer, Root, Wrapper } from './style'
+import { IProps } from '../../common/interfaces/props'
 import Topbar from '../Topbar'
 import theme from '../../utils/theme'
 import MenuBottom from '../MenuBottom/index'
 
-interface LayoutProps {
-  children: ReactNode
-}
-
-const Layout: React.FC<LayoutProps> = props => {
+const Layout: React.FC<IProps> = props => {
   return (
     <ThemeProvider theme={theme}>
       <Root>
