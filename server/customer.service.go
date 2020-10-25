@@ -3,17 +3,17 @@ package main
 import "errors"
 
 // AuthenticationCustomerService service
-func AuthenticationCustomerService(email, password string) Customer {
+func AuthenticationCustomerService(email, password string) (Customer, error) {
 	customer := Customer{}
 	DB.Where(&Customer{Email: &email}).First(&customer)
 	match := CheckPassword(password, customer.Password)
-	if match {
-		token, _ := createCustomerJwtToken(customer)
-		customer.Token = token
-		DB.Save(&customer)
-		return customer
+	if !match {
+		return Customer{}, errors.New("Usuário ou Senha inválidos")
 	}
-	return Customer{}
+	token, _ := createCustomerJwtToken(customer)
+	customer.Token = token
+	DB.Save(&customer)
+	return customer, nil
 }
 
 // LogoutCustomerService service
@@ -35,7 +35,7 @@ func CreateCustomerService(customerRequest customerRequest) (Customer, error) {
 		Password:  password,
 	}
 	if err := DB.Create(&customer).Error; err != nil {
-		return customer, errors.New("Já existe um email para esta conta")
+		return Customer{}, errors.New("Já existe um email para esta conta")
 	}
 	token, _ := createCustomerJwtToken(customer)
 	customer.Token = token

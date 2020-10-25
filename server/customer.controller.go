@@ -18,9 +18,9 @@ type customerRequest struct {
 func LoginCustomerHandler(c *gin.Context) {
 	var customerRequest customerRequest
 	c.BindJSON(&customerRequest)
-	customer := AuthenticationCustomerService(customerRequest.Email, customerRequest.Password)
-	if customer.ID == 0 && customer.Token == "" {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": "Usuário ou Senha Inválido!"})
+	customer, err := AuthenticationCustomerService(customerRequest.Email, customerRequest.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -43,11 +43,9 @@ func LogoutCustomerHandler(c *gin.Context) {
 func CreateCustomerHandler(c *gin.Context) {
 	var customerRequest customerRequest
 	c.BindJSON(&customerRequest)
-	customer, error := CreateCustomerService(customerRequest)
-	if error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": error.Error(),
-		})
+	customer, err := CreateCustomerService(customerRequest)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{

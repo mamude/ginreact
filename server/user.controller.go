@@ -15,9 +15,9 @@ type loginRequest struct {
 func LoginUserHandler(c *gin.Context) {
 	var loginRequest loginRequest
 	c.BindJSON(&loginRequest)
-	user := AuthenticationService(loginRequest.Username, loginRequest.Password)
-	if user.ID == 0 && user.Token == "" {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{"error": "Invalid Username or Password!"})
+	user, err := AuthenticationService(loginRequest.Username, loginRequest.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"token": user.Token, "username": user.Username})

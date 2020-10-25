@@ -1,17 +1,19 @@
 package main
 
+import "errors"
+
 // AuthenticationService service
-func AuthenticationService(username, password string) User {
+func AuthenticationService(username, password string) (User, error) {
 	user := User{}
 	DB.Where(&User{Username: username}).First(&user)
 	match := CheckPassword(password, user.Password)
-	if match {
-		token, _ := createJwtToken(user)
-		user.Token = token
-		DB.Save(&user)
-		return user
+	if !match {
+		return User{}, errors.New("Usuário ou Senha inválidos")
 	}
-	return User{}
+	token, _ := createJwtToken(user)
+	user.Token = token
+	DB.Save(&user)
+	return user, nil
 }
 
 // LogoutService service
