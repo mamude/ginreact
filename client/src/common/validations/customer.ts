@@ -27,7 +27,7 @@ export const createCustomerSchema = yup.object().shape({
     .string()
     .required('Confirmar senha é um campo obrigatório!')
     .when('password', {
-      is: password => (password && password.length > 0 ? true : false),
-      then: yup.string().oneOf([yup.ref('password')], 'Senhas não combinam!'),
+      is: (password: string) => !!(password && password.length > 0),
+      then: yup.string().oneOf([yup.ref('password')], 'Senhas não confirmam!'),
     }),
 })

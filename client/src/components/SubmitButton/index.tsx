@@ -1,10 +1,6 @@
 import React from 'react'
 import { Button, CircularProgress } from '@material-ui/core'
-
-interface SubmitButtonProps {
-  name: string
-  loading: boolean
-}
+import { SubmitButtonProps } from '../../common/interfaces/props'
 
 const SubmitButton = (props: SubmitButtonProps) => {
   return (

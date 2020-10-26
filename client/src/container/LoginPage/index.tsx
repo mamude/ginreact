@@ -16,6 +16,7 @@ import { loginCustomerSchema } from '../../common/validations/customer'
 import { CustomerContext } from '../../context/Customer/index'
 import { Wrapper } from './style'
 import Api from '../../utils/api'
+import SubmitButton from '../../components/SubmitButton'
 
 const LoginPage: React.FC = () => {
   const [error, setError] = useState('')
@@ -70,15 +71,7 @@ const LoginPage: React.FC = () => {
             fullWidth
             helperText={errors.password?.message}
           />
-          <Button
-            startIcon={loading ? <CircularProgress size={30} /> : null}
-            type="submit"
-            fullWidth
-            color="primary"
-            disabled={loading}
-          >
-            Entrar
-          </Button>
+          <SubmitButton name="Entrar" loading={loading} />
           <Grid container>
             <Grid item xs />
             <Grid item>Criar conta</Grid>

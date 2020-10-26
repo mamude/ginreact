@@ -6,6 +6,7 @@ import { CreateCustomerInput } from '../../common/interfaces/inputs'
 import { createCustomerSchema } from '../../common/validations/customer'
 import PageWrapper from '../../components/PageWrapper'
 import SubmitButton from '../../components/SubmitButton'
+import TextFieldPhoneMask from '../../components/TextFieldPhoneMask/index'
 
 const CreateAccountPage: React.FC = () => {
   const [error, setError] = useState('')
@@ -16,7 +17,9 @@ const CreateAccountPage: React.FC = () => {
   })
 
   const onSubmit = async (data: CreateCustomerInput) => {
+    setLoading(true)
     console.log(data)
+    setLoading(false)
   }
 
   return (
@@ -59,6 +62,10 @@ const CreateAccountPage: React.FC = () => {
             margin="normal"
             fullWidth
             helperText={errors.phone?.message}
+            InputProps={{
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              inputComponent: TextFieldPhoneMask as any,
+            }}
           />
           <TextField
             required
@@ -74,7 +81,7 @@ const CreateAccountPage: React.FC = () => {
             required
             inputRef={register}
             type="password"
-            name="password_confirm"
+            name="passwordConfirm"
             label="Confirmar senha"
             margin="normal"
             fullWidth
