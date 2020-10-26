@@ -15,16 +15,18 @@ func main() {
 		// Reset & Seed Data
 		v1.GET("/reset", ResetDatabaseHandler)
 		v1.GET("/seed", SeedDataHandler)
-		// Customer Actions
-		v1.POST("/customer/create", CreateCustomerHandler)
-		v1.POST("/customer/login", LoginCustomerHandler)
-		v1.POST("/customer/logout", TokenAuthMiddleware(), LogoutCustomerHandler)
-		// Authentication & Logout
+		// User Actions
 		v1.POST("/login", LoginUserHandler)
 		v1.POST("/logout", TokenAuthMiddleware(), LogoutUserHandler)
 		// GraphQL Integration
 		v1.POST("/query", TokenAuthMiddleware(), GraphQlMiddleware())
 	}
-	// starts
+	// Customer Actions
+	customers := v1.Group("/customer")
+	{
+		customers.POST("/create", CreateCustomerHandler)
+		customers.POST("/login", LoginCustomerHandler)
+		customers.POST("/logout", TokenAuthMiddleware(), LogoutCustomerHandler)
+	}
 	app.Run()
 }

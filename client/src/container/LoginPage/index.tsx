@@ -1,13 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   Button,
   Container,
+  CircularProgress,
   Grid,
   TextField,
   Typography,
+  Snackbar,
 } from '@material-ui/core'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Alert } from '@material-ui/lab'
 import { LoginFormInput } from '../../common/interfaces/inputs'
 import { loginCustomerSchema } from '../../common/validations/customer'
 import { CustomerContext } from '../../context/Customer/index'
@@ -15,25 +18,37 @@ import { Wrapper } from './style'
 import Api from '../../utils/api'
 
 const LoginPage: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { state, dispatch } = useContext(CustomerContext)
+  const [error, setError] = useState('')
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const { dispatch } = useContext(CustomerContext)
   const { register, handleSubmit, errors } = useForm<LoginFormInput>({
     resolver: yupResolver(loginCustomerSchema),
   })
 
-  const onSubmit = (data: LoginFormInput) => {
-    Api.post('/customer/login', data).then(response => {
-      const payload = response.data
-      dispatch({
-        type: 'LOGIN_SUCCESS',
-        payload,
+  const onSubmit = async (data: LoginFormInput) => {
+    setLoading(true)
+    await Api.post('/customer/login', data)
+      .then(response => {
+        const payload = response.data
+        dispatch({
+          type: 'LOGIN_SUCCESS',
+          payload,
+        })
       })
-    })
+      .catch(err => {
+        setOpen(true)
+        setLoading(false)
+        setError(err.response.data.error)
+      })
   }
 
   return (
     <Container component="main" maxWidth="xs">
       <Wrapper>
+        <Snackbar open={open} autoHideDuration={6000}>
+          <Alert severity="error">{error}</Alert>
+        </Snackbar>
         <Typography variant="h6">Autenticação</Typography>
         <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <TextField
@@ -55,7 +70,13 @@ const LoginPage: React.FC = () => {
             fullWidth
             helperText={errors.password?.message}
           />
-          <Button type="submit" fullWidth color="primary">
+          <Button
+            startIcon={loading ? <CircularProgress size={30} /> : null}
+            type="submit"
+            fullWidth
+            color="primary"
+            disabled={loading}
+          >
             Entrar
           </Button>
           <Grid container>
