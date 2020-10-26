@@ -46,7 +46,7 @@ const LoginPage: React.FC = () => {
   return (
     <Container component="main" maxWidth="xs">
       <Wrapper>
-        <Snackbar open={open} autoHideDuration={6000}>
+        <Snackbar open={open} onClose={() => setOpen(false)}>
           <Alert severity="error">{error}</Alert>
         </Snackbar>
         <Typography variant="h6">Autenticação</Typography>

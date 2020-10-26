@@ -17,6 +17,13 @@ const theme = createMuiTheme({
     MuiButton: {
       variant: 'contained',
     },
+    MuiSnackbar: {
+      autoHideDuration: 2000,
+      anchorOrigin: {
+        vertical: 'top',
+        horizontal: 'center',
+      },
+    },
   },
   overrides: {
     MuiButton: {
