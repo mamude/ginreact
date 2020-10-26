@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from 'react'
-import { IProps } from '../../common/interfaces/props'
+import { LayoutProps } from '../../common/interfaces/props'
 import { CustomerType } from '../../common/types/customer'
 import { customerReducer } from './reducer'
 
@@ -19,7 +19,7 @@ const CustomerContext = createContext<{
   dispatch: () => null,
 })
 
-const CustomerProvider = ({ children }: IProps) => {
+const CustomerProvider = ({ children }: LayoutProps) => {
   const [state, dispatch] = useReducer(customerReducer, initialState)
 
   return (
