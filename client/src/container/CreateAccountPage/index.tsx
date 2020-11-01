@@ -1,94 +1,64 @@
 import React, { useState } from 'react'
-import { Container, TextField, Typography } from '@material-ui/core'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { Container, Typography } from '@material-ui/core'
+import { Field, Form, Formik } from 'formik'
+import { TextField } from 'formik-material-ui'
+import PageWrapper from '../../components/PageWrapper'
 import { CreateCustomerInput } from '../../common/interfaces/inputs'
 import { createCustomerSchema } from '../../common/validations/customer'
-import PageWrapper from '../../components/PageWrapper'
 import SubmitButton from '../../components/SubmitButton'
 import TextFieldPhoneMask from '../../components/TextFieldPhoneMask/index'
 
 const CreateAccountPage: React.FC = () => {
-  const [error, setError] = useState('')
-  const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { register, handleSubmit, errors } = useForm<CreateCustomerInput>({
-    resolver: yupResolver(createCustomerSchema),
-  })
+
+  const initialValues: CreateCustomerInput = {
+    firstName: '',
+    lastName: '',
+    phone: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+  }
 
   const onSubmit = async (data: CreateCustomerInput) => {
     setLoading(true)
-    console.log(data)
-    setLoading(false)
   }
 
   return (
     <Container component="main" maxWidth="xs">
       <PageWrapper>
         <Typography variant="h6">Criar conta</Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            required
-            inputRef={register}
-            name="firstName"
-            label="Nome"
-            margin="normal"
-            fullWidth
-            helperText={errors.firstName?.message}
-          />
-          <TextField
-            required
-            inputRef={register}
-            name="lastName"
-            label="Sobrenome"
-            margin="normal"
-            fullWidth
-            helperText={errors.lastName?.message}
-          />
-          <TextField
-            required
-            inputRef={register}
-            name="email"
-            label="E-mail"
-            margin="normal"
-            fullWidth
-            helperText={errors.email?.message}
-          />
-          <TextField
-            required
-            inputRef={register}
-            name="phone"
-            label="Telefone"
-            margin="normal"
-            fullWidth
-            helperText={errors.phone?.message}
-            InputProps={{
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              inputComponent: TextFieldPhoneMask as any,
-            }}
-          />
-          <TextField
-            required
-            inputRef={register}
-            type="password"
-            name="password"
-            label="Senha"
-            margin="normal"
-            fullWidth
-            helperText={errors.password?.message}
-          />
-          <TextField
-            required
-            inputRef={register}
-            type="password"
-            name="passwordConfirm"
-            label="Confirmar senha"
-            margin="normal"
-            fullWidth
-            helperText={errors.passwordConfirm?.message}
-          />
-          <SubmitButton name="Confirmar" loading={loading} />
-        </form>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={createCustomerSchema}
+          onSubmit={data => {
+            onSubmit(data)
+          }}
+        >
+          <Form>
+            <Field component={TextField} name="firstName" label="Nome" />
+            <Field component={TextField} name="lastName" label="Sobrenome" />
+            <Field component={TextField} name="email" label="E-mail" />
+            <Field
+              component={TextFieldPhoneMask}
+              name="phone"
+              label="Celular"
+            />
+            <Field
+              component={TextField}
+              type="password"
+              name="password"
+              label="Senha"
+            />
+            <Field
+              component={TextField}
+              type="password"
+              name="passwordConfirm"
+              label="Confirmar Senha"
+            />
+            <SubmitButton name="Enviar" loading={loading} />
+          </Form>
+        </Formik>
       </PageWrapper>
     </Container>
   )

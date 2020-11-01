@@ -13,6 +13,8 @@ const theme = createMuiTheme({
     MuiTextField: {
       variant: 'outlined',
       size: 'small',
+      margin: 'normal',
+      fullWidth: true,
     },
     MuiButton: {
       variant: 'contained',

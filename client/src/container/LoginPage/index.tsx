@@ -1,15 +1,7 @@
 import React, { useContext, useState } from 'react'
-import {
-  Button,
-  Container,
-  CircularProgress,
-  Grid,
-  TextField,
-  Typography,
-  Snackbar,
-} from '@material-ui/core'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { Container, Grid, Typography, Snackbar } from '@material-ui/core'
+import { Field, Form, Formik } from 'formik'
+import { TextField } from 'formik-material-ui'
 import { Alert } from '@material-ui/lab'
 import { LoginFormInput } from '../../common/interfaces/inputs'
 import { loginCustomerSchema } from '../../common/validations/customer'
@@ -23,9 +15,11 @@ const LoginPage: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const { dispatch } = useContext(CustomerContext)
-  const { register, handleSubmit, errors } = useForm<LoginFormInput>({
-    resolver: yupResolver(loginCustomerSchema),
-  })
+
+  const initialValues: LoginFormInput = {
+    email: '',
+    password: '',
+  }
 
   const onSubmit = async (data: LoginFormInput) => {
     setLoading(true)
@@ -51,32 +45,28 @@ const LoginPage: React.FC = () => {
           <Alert severity="error">{error}</Alert>
         </Snackbar>
         <Typography variant="h6">Autenticação</Typography>
-        <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            required
-            inputRef={register}
-            name="email"
-            label="E-mail"
-            margin="normal"
-            fullWidth
-            helperText={errors.email?.message}
-          />
-          <TextField
-            required
-            inputRef={register}
-            name="password"
-            type="password"
-            label="Senha"
-            margin="normal"
-            fullWidth
-            helperText={errors.password?.message}
-          />
-          <SubmitButton name="Entrar" loading={loading} />
-          <Grid container>
-            <Grid item xs />
-            <Grid item>Criar conta</Grid>
-          </Grid>
-        </form>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={loginCustomerSchema}
+          onSubmit={data => {
+            onSubmit(data)
+          }}
+        >
+          <Form>
+            <Field component={TextField} name="email" label="E-mail" />
+            <Field
+              component={TextField}
+              type="password"
+              name="password"
+              label="Senha"
+            />
+            <SubmitButton name="Entrar" loading={loading} />
+            <Grid container>
+              <Grid item xs />
+              <Grid item>Criar conta</Grid>
+            </Grid>
+          </Form>
+        </Formik>
       </Wrapper>
     </Container>
   )

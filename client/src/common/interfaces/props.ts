@@ -11,5 +11,8 @@ export interface SubmitButtonProps {
 
 export interface TextFieldCustomProps {
   inputRef: (ref: HTMLInputElement | null) => void
+  name: string
+  label: string
   mask: string
+  value: string
 }

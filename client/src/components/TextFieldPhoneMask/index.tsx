@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-props-no-spreading */
+import { TextField } from '@material-ui/core'
+import { fieldToTextField, TextFieldProps } from 'formik-material-ui'
 import React from 'react'
 import InputMask from 'react-input-mask'
 import { TextFieldCustomProps } from '../../common/interfaces/props'
 
-const TextFieldPhoneMask = (props: TextFieldCustomProps) => {
+const TextFieldPhoneMaskConfig = (props: TextFieldCustomProps) => {
   const { inputRef, ...others } = props
   return (
     <InputMask
@@ -12,7 +14,20 @@ const TextFieldPhoneMask = (props: TextFieldCustomProps) => {
       ref={(ref: any) => {
         inputRef(ref ? ref.inputElement : null)
       }}
-      mask="(999) 99999-9999"
+    />
+  )
+}
+
+const TextFieldPhoneMask = (props: TextFieldProps) => {
+  return (
+    <TextField
+      {...fieldToTextField(props)}
+      InputProps={{
+        inputComponent: TextFieldPhoneMaskConfig as any,
+        inputProps: {
+          mask: '(99) 99999-9999',
+        },
+      }}
     />
   )
 }
