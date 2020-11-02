@@ -1,6 +1,7 @@
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useEffect, useReducer } from 'react'
 import { LayoutProps } from '../../common/interfaces/props'
 import { CustomerType } from '../../common/types/customer'
+import { getCustomer, setCustomer } from '../../utils/security'
 import { customerReducer } from './reducer'
 
 const initialState = {
@@ -20,7 +21,15 @@ const CustomerContext = createContext<{
 })
 
 const CustomerProvider = ({ children }: LayoutProps) => {
-  const [state, dispatch] = useReducer(customerReducer, initialState)
+  const localState = getCustomer() || ''
+  const [state, dispatch] = useReducer(
+    customerReducer,
+    localState || initialState,
+  )
+
+  useEffect(() => {
+    setCustomer(state)
+  }, [state])
 
   return (
     <CustomerContext.Provider value={{ state, dispatch }}>
@@ -29,4 +38,14 @@ const CustomerProvider = ({ children }: LayoutProps) => {
   )
 }
 
-export { CustomerContext, CustomerProvider }
+const CustomerConsumer = ({ children }: LayoutProps) => {
+  return (
+    <CustomerContext.Consumer>
+      {context => {
+        return children
+      }}
+    </CustomerContext.Consumer>
+  )
+}
+
+export { CustomerContext, CustomerProvider, CustomerConsumer }

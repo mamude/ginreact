@@ -34,6 +34,11 @@ const theme = createMuiTheme({
         marginBottom: 16,
       },
     },
+    MuiSnackbar: {
+      root: {
+        marginTop: 100,
+      },
+    },
   },
 })
 

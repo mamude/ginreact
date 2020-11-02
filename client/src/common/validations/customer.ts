@@ -18,7 +18,10 @@ export const createCustomerSchema = yup.object().shape({
     .string()
     .email('E-mail inválido!')
     .required('E-mail é um campo obrigatório!'),
-  phone: yup.string().required('Telefone é um campo obrigatório!'),
+  phone: yup
+    .string()
+    .required('Telefone é um campo obrigatório!')
+    .min(15, 'Informe o número do seu celular corretamente!'),
   password: yup
     .string()
     .required('Senha é um campo obrigatório!')

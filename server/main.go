@@ -19,7 +19,7 @@ func main() {
 		v1.POST("/login", LoginUserHandler)
 		v1.POST("/logout", TokenAuthMiddleware(), LogoutUserHandler)
 		// GraphQL Integration
-		v1.POST("/query", TokenAuthMiddleware(), GraphQlMiddleware())
+		v1.POST("/query", GraphQlMiddleware())
 	}
 	// Customer Actions
 	customers := v1.Group("/customer")
