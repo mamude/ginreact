@@ -7,6 +7,7 @@ import (
 var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
+		"market":    MarketByIDQuery,
 		"markets":   MarketListQuery,
 		"companies": CompanyQuery,
 		"people":    PersonQuery,
@@ -27,8 +28,8 @@ var rootMutation = graphql.NewObject(graphql.ObjectConfig{
 	},
 })
 
-// CompanySchema Graphql Schema
-var CompanySchema, _ = graphql.NewSchema(graphql.SchemaConfig{
+// EcommerceSchema Graphql Schema
+var EcommerceSchema, _ = graphql.NewSchema(graphql.SchemaConfig{
 	Query:    rootQuery,
 	Mutation: rootMutation,
 })

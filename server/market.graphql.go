@@ -52,8 +52,17 @@ var marketType = graphql.NewObject(graphql.ObjectConfig{
 		"categoryBusiness": &graphql.Field{
 			Type: categoryBusinessType,
 		},
+		"products": &graphql.Field{
+			Type: graphql.NewList(productType),
+		},
 	},
 })
+
+var marketArgumentFields = graphql.FieldConfigArgument{
+	"id": &graphql.ArgumentConfig{
+		Type: graphql.NewNonNull(graphql.Int),
+	},
+}
 
 // MarketListQuery object
 var MarketListQuery = &graphql.Field{
@@ -61,5 +70,15 @@ var MarketListQuery = &graphql.Field{
 	Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 		markets := ListMarketsService()
 		return markets, nil
+	},
+}
+
+// MarketByIDQuery object
+var MarketByIDQuery = &graphql.Field{
+	Type: marketType,
+	Args: marketArgumentFields,
+	Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+		market := GetMarketByID(params.Args["id"].(int))
+		return market, nil
 	},
 }

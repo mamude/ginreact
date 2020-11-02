@@ -1,11 +1,6 @@
 import styled from 'styled-components'
-import { CardContent, CardMedia } from '@material-ui/core'
+import { CardContent } from '@material-ui/core'
 import StarIcon from '@material-ui/icons/Star'
-
-export const Image = styled(CardMedia)`
-  height: 100px;
-  width: 100px;
-`
 
 export const MarketContent = styled(CardContent)`
   padding: 12px;
@@ -17,6 +12,7 @@ export const MarketInfo = styled.div`
   display: flex;
   width: 100%;
   margin-top: 8px;
+  color: #c5c5c5;
 `
 
 export const MarketRating = styled.span`
@@ -31,9 +27,4 @@ export const MarketRating = styled.span`
 export const StarRate = styled(StarIcon)`
   color: #e7a74e;
   font-size: 17px;
-`
-
-export const Separator = styled.span`
-  margin-left: 5px;
-  margin-right: 5px;
 `

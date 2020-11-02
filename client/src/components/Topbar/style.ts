@@ -11,7 +11,9 @@ export const ShoppingName = styled(Typography)`
 `
 
 export const ImgLogo = styled.img`
-  object-fit: cover;
+  background-size: cover;
+  width: 15%;
+  // object-fit: cover;
   margin-top: -60px;
   margin-bottom: -60px;
   margin-right: 45px;

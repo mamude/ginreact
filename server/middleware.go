@@ -22,7 +22,7 @@ func TokenAuthMiddleware() gin.HandlerFunc {
 // GraphQlMiddleware middlerare
 func GraphQlMiddleware() gin.HandlerFunc {
 	h := handler.New(&handler.Config{
-		Schema:     &CompanySchema,
+		Schema:     &EcommerceSchema,
 		Pretty:     true,
 		GraphiQL:   false,
 		Playground: false,
