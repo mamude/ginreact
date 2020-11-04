@@ -1,7 +1,8 @@
-package main
+package gql
 
 import (
 	"github.com/graphql-go/graphql"
+	"github.com/mamude/ginreact/services"
 )
 
 var categoryBusinessType = graphql.NewObject(graphql.ObjectConfig{
@@ -68,7 +69,7 @@ var marketArgumentFields = graphql.FieldConfigArgument{
 var MarketListQuery = &graphql.Field{
 	Type: graphql.NewList(marketType),
 	Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-		markets := ListMarketsService()
+		markets := services.ListMarketsService()
 		return markets, nil
 	},
 }
@@ -78,7 +79,7 @@ var MarketByIDQuery = &graphql.Field{
 	Type: marketType,
 	Args: marketArgumentFields,
 	Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-		market := GetMarketByID(params.Args["id"].(int))
+		market := services.GetMarketByIDService(params.Args["id"].(int))
 		return market, nil
 	},
 }

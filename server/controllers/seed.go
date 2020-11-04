@@ -1,35 +1,36 @@
-package main
+package controllers
 
 import (
-	"strings"
-
 	"github.com/brianvoe/gofakeit/v5"
 	"github.com/gin-gonic/gin"
+	"github.com/mamude/ginreact/models"
+	"github.com/mamude/ginreact/security"
+	"strings"
 )
 
 func resetTables() {
-	DB.Exec("DELETE FROM users;")
-	DB.Exec("DELETE FROM people;")
-	DB.Exec("DELETE FROM companies;")
-	DB.Exec("DELETE FROM roles;")
-	DB.Exec("DELETE FROM order_items;")
-	DB.Exec("DELETE FROM orders;")
-	DB.Exec("DELETE FROM shopping_carts;")
-	DB.Exec("DELETE FROM products;")
-	DB.Exec("DELETE FROM markets;")
-	DB.Exec("DELETE FROM categories;")
-	DB.Exec("DELETE FROM category_businesses;")
-	DB.Exec("DELETE FROM customers;")
+	models.DB.Exec("DELETE FROM users;")
+	models.DB.Exec("DELETE FROM people;")
+	models.DB.Exec("DELETE FROM companies;")
+	models.DB.Exec("DELETE FROM roles;")
+	models.DB.Exec("DELETE FROM order_items;")
+	models.DB.Exec("DELETE FROM orders;")
+	models.DB.Exec("DELETE FROM shopping_carts;")
+	models.DB.Exec("DELETE FROM products;")
+	models.DB.Exec("DELETE FROM markets;")
+	models.DB.Exec("DELETE FROM categories;")
+	models.DB.Exec("DELETE FROM category_businesses;")
+	models.DB.Exec("DELETE FROM customers;")
 }
 
 func seedTables() {
 	// create User
 	password := "admin"
-	hash, _ := HashPassword(password)
-	DB.Create(&User{Username: "admin", Password: hash})
+	hash, _ := security.HashPassword(password)
+	models.DB.Create(&models.User{Username: "admin", Password: hash})
 
 	// create category business
-	categoryBusiness := []CategoryBusiness{
+	categoryBusiness := []models.CategoryBusiness{
 		{Name: "Category 1"},
 		{Name: "Category 2"},
 		{Name: "Category 3"},
@@ -41,14 +42,14 @@ func seedTables() {
 		{Name: "Category 9"},
 		{Name: "Category 10"},
 	}
-	DB.Create(&categoryBusiness)
+	models.DB.Create(&categoryBusiness)
 
 	// create markets
 	for i := 0; i < 20; i++ {
 		appName := gofakeit.AppName()
-		categoryBusiness := CategoryBusiness{}
-		DB.First(&categoryBusiness, gofakeit.Number(1, 10))
-		DB.Create(&Market{
+		categoryBusiness := models.CategoryBusiness{}
+		models.DB.First(&categoryBusiness, gofakeit.Number(1, 10))
+		models.DB.Create(&models.Market{
 			CategoryBusinessID: categoryBusiness.ID,
 			Name:               &appName,
 			Description:        gofakeit.Phrase(),
@@ -63,7 +64,7 @@ func seedTables() {
 	}
 
 	// create categories
-	categories := []Category{
+	categories := []models.Category{
 		{Name: "Category 1"},
 		{Name: "Category 2"},
 		{Name: "Category 3"},
@@ -75,14 +76,14 @@ func seedTables() {
 		{Name: "Category 9"},
 		{Name: "Category 10"},
 	}
-	DB.Create(&categories)
+	models.DB.Create(&categories)
 
 	// create products
 	for i := 0; i < 100; i++ {
-		market := Market{}
-		category := Category{}
-		DB.First(&category, gofakeit.Number(1, 10))
-		DB.First(&market, gofakeit.Number(1, 10))
+		market := models.Market{}
+		category := models.Category{}
+		models.DB.First(&category, gofakeit.Number(1, 10))
+		models.DB.First(&market, gofakeit.Number(1, 10))
 		productName := []string{
 			gofakeit.BeerName(),
 			gofakeit.BeerMalt(),
@@ -92,7 +93,7 @@ func seedTables() {
 			gofakeit.Lunch(),
 			gofakeit.Snack(),
 		}
-		DB.Create(&Product{
+		models.DB.Create(&models.Product{
 			CategoryID:  category.ID,
 			MarketID:    market.ID,
 			Name:        gofakeit.RandomString(productName),
@@ -106,8 +107,8 @@ func seedTables() {
 	for i := 0; i < 100; i++ {
 		lastName := gofakeit.LastName()
 		email := strings.ToLower(lastName + "@" + gofakeit.DomainName())
-		password, _ = HashPassword("123456")
-		DB.Create(&Customer{
+		password, _ = security.HashPassword("123456")
+		models.DB.Create(&models.Customer{
 			FirstName: gofakeit.FirstName(),
 			LastName:  lastName,
 			Phone:     gofakeit.Phone(),

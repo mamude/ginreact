@@ -1,13 +1,12 @@
-package main
+package models
 
 import (
-	"log"
-	"os"
-	"time"
-
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"log"
+	"os"
+	"time"
 )
 
 // DB global variable
@@ -36,13 +35,10 @@ func OpenConnection() {
 		&Category{},
 		&CategoryBusiness{},
 		&Customer{},
-		&Company{},
 		&Market{},
 		&Order{},
 		&OrderItem{},
-		&Person{},
 		&Product{},
-		&Role{},
 		&ShoppingCart{},
 		&User{})
 	DB = database

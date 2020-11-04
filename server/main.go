@@ -2,31 +2,27 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/mamude/ginreact/controllers"
+	"github.com/mamude/ginreact/models"
 )
 
 func main() {
-	// database connection
-	OpenConnection()
-	// init app
+	models.OpenConnection()
 	app := gin.Default()
-	// grouping routes
+
 	v1 := app.Group("/api/v1")
 	{
-		// Reset & Seed Data
-		v1.GET("/reset", ResetDatabaseHandler)
-		v1.GET("/seed", SeedDataHandler)
-		// User Actions
-		v1.POST("/login", LoginUserHandler)
-		v1.POST("/logout", TokenAuthMiddleware(), LogoutUserHandler)
-		// GraphQL Integration
+		v1.GET("/reset", controllers.ResetDatabaseHandler)
+		v1.GET("/seed", controllers.SeedDataHandler)
+		v1.POST("/login", controllers.LoginUserHandler)
+		v1.POST("/logout", TokenAuthMiddleware(), controllers.LogoutUserHandler)
 		v1.POST("/query", GraphQlMiddleware())
 	}
-	// Customer Actions
 	customers := v1.Group("/customer")
 	{
-		customers.POST("/create", CreateCustomerHandler)
-		customers.POST("/login", LoginCustomerHandler)
-		customers.POST("/logout", TokenAuthMiddleware(), LogoutCustomerHandler)
+		customers.POST("/create", controllers.CreateCustomerHandler)
+		customers.POST("/login", controllers.LoginCustomerHandler)
+		customers.POST("/logout", TokenAuthMiddleware(), controllers.LogoutCustomerHandler)
 	}
 	app.Run()
 }

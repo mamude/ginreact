@@ -1,8 +1,9 @@
-package main
+package security
 
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/mamude/ginreact/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"net/http"
@@ -21,53 +22,14 @@ type claims struct {
 	jwt.StandardClaims
 }
 
-func createCustomerJwtToken(customer Customer) (string, error) {
-	var err error
-	expirationTime := time.Now().Add(24 * time.Hour)
-	claims := &claims{
-		ID:        customer.ID,
-		FirstName: customer.FirstName,
-		LastName:  customer.LastName,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-		},
-	}
-
-	at := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := at.SignedString([]byte(jwtSecret))
-	if err != nil {
-		return "", err
-	}
-	return token, nil
-}
-
-func createJwtToken(user User) (string, error) {
-	var err error
-	expirationTime := time.Now().Add(24 * time.Hour)
-	claims := &claims{
-		ID:       user.ID,
-		Username: user.Username,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-		},
-	}
-
-	at := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	token, err := at.SignedString([]byte(jwtSecret))
-	if err != nil {
-		return "", err
-	}
-	return token, nil
-}
-
 func extractToken(r *http.Request) string {
 	bearToken := r.Header.Get("Authorization")
 	strArr := strings.Split(bearToken, " ")
 	if len(strArr) == 2 {
 		token := strArr[1]
 		// validate token on database
-		user := User{}
-		err := DB.Where(&User{Token: token}).First(&user).Error
+		user := models.User{}
+		err := models.DB.Where(&models.User{Token: token}).First(&user).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return ""
 		}
@@ -95,8 +57,49 @@ func verifyToken(r *http.Request) (*jwt.Token, error) {
 	return token, nil
 }
 
-// TokenValidService service
-func TokenValidService(r *http.Request) error {
+// CreateCustomerJwtToken service
+func CreateCustomerJwtToken(customer models.Customer) (string, error) {
+	var err error
+	expirationTime := time.Now().Add(24 * time.Hour)
+	claims := &claims{
+		ID:        customer.ID,
+		FirstName: customer.FirstName,
+		LastName:  customer.LastName,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+	at := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token, err := at.SignedString([]byte(jwtSecret))
+	if err != nil {
+		return "", err
+	}
+	return token, nil
+}
+
+// CreateUserJwtToken service
+func CreateUserJwtToken(user models.User) (string, error) {
+	var err error
+	expirationTime := time.Now().Add(24 * time.Hour)
+	claims := &claims{
+		ID:       user.ID,
+		Username: user.Username,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+	at := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token, err := at.SignedString([]byte(jwtSecret))
+	if err != nil {
+		return "", err
+	}
+	return token, nil
+}
+
+// TokenValid service
+func TokenValid(r *http.Request) error {
 	token, err := verifyToken(r)
 	if err != nil {
 		return err
