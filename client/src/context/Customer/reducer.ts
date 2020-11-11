@@ -13,6 +13,7 @@ export function customerReducer(
         token: action.payload.token,
         email: action.payload.email,
         user: action.payload.user,
+        sessionId: '',
       }
     default:
       return state

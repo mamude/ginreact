@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { gql, useQuery } from '@apollo/client'
 import { Box, Card, CardActionArea, Grid, Typography } from '@material-ui/core'
 import { Product } from '../../common/interfaces/models'
+import { getCustomer } from '../../utils/security'
 import {
   DividerHr,
   Separator,
@@ -46,12 +47,18 @@ const MARKETS_QUERY = gql`
 `
 
 const MarketPage: React.FC = () => {
+  const customer = getCustomer()
   const { id } = useParams<{ id: string }>()
   const { loading, error, data } = useQuery(MARKETS_QUERY, {
     variables: { id },
   })
   if (loading) return <div>Carregando...</div>
   if (error) return <div>{error.message}</div>
+
+  const addProductToCart = (product: Product) => {
+    console.log(product, customer)
+  }
+
   return (
     <CustomerConsumer>
       <PageWrapper>
@@ -82,7 +89,7 @@ const MarketPage: React.FC = () => {
         <Grid container spacing={4}>
           {data.market.products.map((product: Product) => (
             <Grid key={product.id} item xs={12} md={6}>
-              <CardActionArea component="a" href="#">
+              <CardActionArea onClick={() => addProductToCart(product)}>
                 <Card style={{ display: 'flex' }}>
                   <MarketContent>
                     <ProductName>{product.name}</ProductName>

@@ -3,6 +3,7 @@ export type CustomerType = {
   token: string
   email: string
   user: string
+  sessionId: string
 }
 
 export type InitialStateType = {
@@ -16,5 +17,6 @@ export type CustomerAction = {
     token: string
     email: string
     user: string
+    sessionId: string
   }
 }

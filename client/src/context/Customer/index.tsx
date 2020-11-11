@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useReducer } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { LayoutProps } from '../../common/interfaces/props'
 import { CustomerType } from '../../common/types/customer'
 import { getCustomer, setCustomer } from '../../utils/security'
@@ -8,7 +9,8 @@ const initialState = {
   id: 0,
   token: '',
   email: '',
-  user: '',
+  user: 'Convidado',
+  sessionId: uuidv4(),
 }
 
 const CustomerContext = createContext<{

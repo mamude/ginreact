@@ -103,16 +103,19 @@ type Product struct {
 
 // ShoppingCart model
 type ShoppingCart struct {
-	ID        int `gorm:"primaryKey"`
-	MarketID  int
-	Market    Market `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	ProductID int
-	Product   Product `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	Price     float64
-	Amount    int
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	ID         int `gorm:"primaryKey"`
+	CustomerID int
+	Customer   Customer `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	MarketID   int
+	Market     Market `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	ProductID  int
+	Product    Product `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Price      float64
+	Amount     int
+	SessionID  string
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+	DeletedAt  gorm.DeletedAt `gorm:"index"`
 }
 
 // User model

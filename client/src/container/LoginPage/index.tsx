@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Grid, Snackbar } from '@material-ui/core'
 import { Field, Form, Formik } from 'formik'
 import { TextField } from 'formik-material-ui'
@@ -12,6 +13,7 @@ import SubmitButton from '../../components/SubmitButton'
 import Api from '../../utils/api'
 
 const LoginPage: React.FC = () => {
+  const history = useHistory()
   const [error, setError] = useState('')
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -31,6 +33,7 @@ const LoginPage: React.FC = () => {
           type: 'LOGIN_SUCCESS',
           payload,
         })
+        history.push('/')
       })
       .catch(err => {
         setOpen(true)
