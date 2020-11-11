@@ -1,6 +1,6 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { gql, useQuery } from '@apollo/client'
+import { Link, useHistory, useParams } from 'react-router-dom'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { Box, Card, CardActionArea, Grid, Typography } from '@material-ui/core'
 import { Product } from '../../common/interfaces/models'
 import { getCustomer } from '../../utils/security'
@@ -8,6 +8,7 @@ import {
   DividerHr,
   Separator,
   ImageProduct,
+  BackHome,
 } from '../../components/Common/style'
 import { CustomerConsumer } from '../../context/Customer'
 import {
@@ -19,7 +20,6 @@ import {
   ProductDescription,
   ProductPrice,
   StarRate,
-  BackHome,
 } from './style'
 import PageWrapper from '../../components/PageWrapper'
 import image from '../../images/image.png'
@@ -46,17 +46,50 @@ const MARKETS_QUERY = gql`
   }
 `
 
+const ADD_TO_CART = gql`
+  mutation AddToCart(
+    $customerId: Int!
+    $marketId: Int!
+    $productId: Int!
+    $amount: Int!
+    $sessionId: String!
+  ) {
+    addToCart(
+      customerId: $customerId
+      marketId: $marketId
+      productId: $productId
+      amount: $amount
+      sessionId: $sessionId
+    ) {
+      amount
+      price
+    }
+  }
+`
+
 const MarketPage: React.FC = () => {
   const customer = getCustomer()
   const { id } = useParams<{ id: string }>()
+  const history = useHistory()
   const { loading, error, data } = useQuery(MARKETS_QUERY, {
     variables: { id },
   })
+  const [shoppingCart] = useMutation(ADD_TO_CART)
+
   if (loading) return <div>Carregando...</div>
   if (error) return <div>{error.message}</div>
 
   const addProductToCart = (product: Product) => {
-    console.log(product, customer)
+    shoppingCart({
+      variables: {
+        customerId: customer.id,
+        marketId: id,
+        productId: product.id,
+        amount: 1,
+        sessionId: customer.sessionId,
+      },
+    })
+    history.push('/cart')
   }
 
   return (

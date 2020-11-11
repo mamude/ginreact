@@ -1,6 +1,7 @@
 export interface LoginFormInput {
   email: string
   password: string
+  sessionId: string
 }
 
 export interface CreateCustomerInput {

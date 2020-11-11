@@ -8,11 +8,13 @@ type CustomerRequest struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
 	Phone     string `json:"phone"`
+	SessionID string `json:"sessionId"`
 }
 
 // UserLoginRequest request
 type UserLoginRequest struct {
-	ID       int    `json:"id"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	ID        int    `json:"id"`
+	Username  string `json:"username"`
+	Password  string `json:"password"`
+	SessionID string `json:"sessionId"`
 }

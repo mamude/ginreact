@@ -22,6 +22,7 @@ const LoginPage: React.FC = () => {
   const initialValues: LoginFormInput = {
     email: '',
     password: '',
+    sessionId: '512bf895-48a9-45fc-b03d-054f6b652ad9',
   }
 
   const onSubmit = async (data: LoginFormInput) => {

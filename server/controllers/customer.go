@@ -12,7 +12,7 @@ var customerRequest = requests.CustomerRequest{}
 // LoginCustomerHandler action
 func LoginCustomerHandler(c *gin.Context) {
 	c.BindJSON(&customerRequest)
-	customer, err := services.AuthenticationCustomerService(customerRequest.Email, customerRequest.Password)
+	customer, err := services.AuthenticationCustomerService(customerRequest.Email, customerRequest.Password, customerRequest.SessionID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

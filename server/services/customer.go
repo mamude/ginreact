@@ -10,7 +10,7 @@ import (
 var customer = models.Customer{}
 
 // AuthenticationCustomerService service
-func AuthenticationCustomerService(email, password string) (models.Customer, error) {
+func AuthenticationCustomerService(email, password, sessionID string) (models.Customer, error) {
 	models.DB.Where(&models.Customer{Email: &email}).First(&customer)
 	match := security.CheckPassword(password, customer.Password)
 	if !match {
@@ -19,6 +19,8 @@ func AuthenticationCustomerService(email, password string) (models.Customer, err
 	token, _ := security.CreateCustomerJwtToken(customer)
 	customer.Token = token
 	models.DB.Save(&customer)
+	// sync shopping cart
+	SyncShoppingCart(sessionID, customer.ID)
 	return customer, nil
 }
 

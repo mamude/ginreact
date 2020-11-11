@@ -7,18 +7,22 @@ import (
 var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootQuery",
 	Fields: graphql.Fields{
-		"market":  MarketByIDQuery,
-		"markets": MarketListQuery,
+		"market":          MarketByIDQuery,
+		"markets":         MarketListQuery,
+		"shoppingCart":    ShoppingCartListQuery,
+		"shoppingCartSum": ShoppingCartTotalQuery,
 	},
 })
 
-// var rootMutation = graphql.NewObject(graphql.ObjectConfig{
-// 	Name:   "RootMutation",
-// 	Fields: graphql.Fields{},
-// })
+var rootMutation = graphql.NewObject(graphql.ObjectConfig{
+	Name: "RootMutation",
+	Fields: graphql.Fields{
+		"addToCart": AddToShoppingCartMutation,
+	},
+})
 
 // EcommerceSchema Graphql Schema
 var EcommerceSchema, _ = graphql.NewSchema(graphql.SchemaConfig{
-	Query: rootQuery,
-	//Mutation: rootMutation,
+	Query:    rootQuery,
+	Mutation: rootMutation,
 })

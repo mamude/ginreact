@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import StarIcon from '@material-ui/icons/Star'
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { CardContent } from '@material-ui/core'
 
 export const MarketInfo = styled.div`
@@ -36,13 +35,6 @@ export const Deliver = styled.span`
 
 export const StarRate = styled(StarIcon)`
   color: #e7a74e;
-`
-
-export const BackHome = styled(ArrowBackIosIcon)`
-  color: #000;
-  display: flex;
-  align-items: center;
-  z-index: 1;
 `
 
 export const ProductName = styled.span`
