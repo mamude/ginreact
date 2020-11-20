@@ -88,8 +88,9 @@ const MarketPage: React.FC = () => {
         amount: 1,
         sessionId: customer.sessionId,
       },
+    }).finally(() => {
+      history.push('/cart')
     })
-    history.push('/cart')
   }
 
   return (
@@ -108,14 +109,12 @@ const MarketPage: React.FC = () => {
           <Separator>•</Separator>
           {data.market.deliveryTime}
           <Separator>•</Separator>
-          {data.market.distance.toFixed(1)}
-          &nbsp;km
+          {`${data.market.distance.toFixed(1)} km`}
           <Separator>•</Separator>
         </MarketInfo>
         <MarketInfo>
           <Deliver>
-            ENTREGA R$ &nbsp;
-            {data.market.deliveryTax.toFixed(2)}
+            {`ENTREGA R$ ${data.market.deliveryTax.toFixed(2)}`}
           </Deliver>
         </MarketInfo>
         <DividerHr />
@@ -129,10 +128,7 @@ const MarketPage: React.FC = () => {
                     <ProductDescription>
                       {product.description.substring(0, 80)}
                     </ProductDescription>
-                    <ProductPrice>
-                      R$&nbsp;
-                      {product.price}
-                    </ProductPrice>
+                    <ProductPrice>{`R$ ${product.price}`}</ProductPrice>
                   </MarketContent>
                   <Box flexGrow={1} />
                   <ImageProduct image={image} title={product.name} />

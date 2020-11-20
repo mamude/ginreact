@@ -17,7 +17,9 @@ var rootQuery = graphql.NewObject(graphql.ObjectConfig{
 var rootMutation = graphql.NewObject(graphql.ObjectConfig{
 	Name: "RootMutation",
 	Fields: graphql.Fields{
-		"addToCart": AddToShoppingCartMutation,
+		"addToCart":      AddToShoppingCartMutation,
+		"updateItemCart": UpdateProductShoppingCartMutation,
+		"removeItemCart": RemoveProductShoppingCartMutation,
 	},
 })
 

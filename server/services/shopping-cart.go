@@ -24,7 +24,7 @@ func ListShoppingCart(sessionID string, customerID int) []models.ShoppingCart {
 		models.DB.Joins("Market").Joins("Product").Where("session_id = ?", sessionID).Find(&shoppingCart)
 		return shoppingCart
 	}
-	models.DB.Joins("Market").Joins("Product").Where("customer_id = ?", customerID).Find(&shoppingCart)
+	models.DB.Joins("Market").Joins("Product").Where("customer_id = ?", customerID).Find(&shoppingCart)	
 	return shoppingCart
 }
 
@@ -47,26 +47,74 @@ func AddProductToShoppingCart(params graphql.ResolveParams) (models.ShoppingCart
 		return shoppingCart, errors.New("Quantidade insuficiente em estoque")
 	}
 
-	// add product to shopping cart
-	shoppingCart.CustomerID = customerID
-	shoppingCart.MarketID = marketID
-	shoppingCart.ProductID = productID
-	shoppingCart.Price = product.Price
-	shoppingCart.Amount = amount
-	shoppingCart.SessionID = sessionID
-	models.DB.Save(&shoppingCart)
+	// add or update product to shopping cart
+	where := models.ShoppingCart{CustomerID: customerID, MarketID: marketID, ProductID: productID}
+	if err := models.DB.Where(where).First(&shoppingCart).Error; err != nil {
+		shoppingCart.CustomerID = customerID
+		shoppingCart.MarketID = marketID
+		shoppingCart.ProductID = productID
+		shoppingCart.Price = product.Price
+		shoppingCart.Amount = 1
+		shoppingCart.SessionID = sessionID
+		models.DB.Save(&shoppingCart)
+	} else {
+		shoppingCart.Amount = shoppingCart.Amount + 1
+		shoppingCart.Price = product.Price * float64(shoppingCart.Amount)
+		models.DB.Save(&shoppingCart)
+	}
 
+	return shoppingCart, nil
+}
+
+// UpdateProductShoppingCart service
+func UpdateProductShoppingCart(params graphql.ResolveParams) (models.ShoppingCart, error) {
+	shoppingCart := models.ShoppingCart{}
+
+	productID := params.Args["productId"].(int)
+	cartID := params.Args["cartId"].(int)
+
+	if err := models.DB.Joins("Product").Where("shopping_carts.product_id = ? AND shopping_carts.id = ?", productID, cartID).First(&shoppingCart).Error; err != nil {
+		return shoppingCart, errors.New("Produto não encontrado")
+	}
+	shoppingCart.Amount = shoppingCart.Amount + 1
+	shoppingCart.Price = shoppingCart.Product.Price * float64(shoppingCart.Amount)
+	models.DB.Save(&shoppingCart)
+	return shoppingCart, nil
+}
+
+// RemoveProductShoppingCart service
+func RemoveProductShoppingCart(params graphql.ResolveParams) (models.ShoppingCart, error) {
+	shoppingCart := models.ShoppingCart{}
+
+	productID := params.Args["productId"].(int)
+	cartID := params.Args["cartId"].(int)
+
+	if err := models.DB.Joins("Product").Where("shopping_carts.product_id = ? AND shopping_carts.id = ?", productID, cartID).First(&shoppingCart).Error; err != nil {
+		return shoppingCart, errors.New("Produto não encontrado")
+	}
+	if shoppingCart.Amount == 1 {
+		models.DB.Delete(&shoppingCart)
+	} else {
+		shoppingCart.Amount = shoppingCart.Amount - 1
+		shoppingCart.Price = shoppingCart.Product.Price * float64(shoppingCart.Amount)
+		models.DB.Save(&shoppingCart)
+	}
 	return shoppingCart, nil
 }
 
 // SumShoppingCartService service
 func SumShoppingCartService(sessionID string, customerID int) map[string]interface{} {
 	result := map[string]interface{}{}
-	query := "SUM(amount) as amount, SUM(price * amount) as total"
+	query := `SUM(amount) as amount,
+		SUM(price * amount) as subtotal,
+		SUM(price * amount) + Market.delivery_tax as total,
+		Market.id as marketId,
+		Market.name as market,
+		Market.delivery_tax as tax`
 	if sessionID != "" {
-		models.DB.Select(query).Model(models.ShoppingCart{}).Where("session_id = ?", sessionID).Find(&result)
+		models.DB.Select(query).Model(models.ShoppingCart{}).Joins("Market").Where("session_id = ?", sessionID).Find(&result)
 		return result
 	}
-	models.DB.Select(query).Model(models.ShoppingCart{}).Where("customer_id = ?", customerID).Find(&result)
+	models.DB.Select(query).Model(models.ShoppingCart{}).Joins("Market").Where("customer_id = ?", customerID).Find(&result)
 	return result
 }

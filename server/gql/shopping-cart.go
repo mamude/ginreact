@@ -11,9 +11,6 @@ var shoppingCartType = graphql.NewObject(graphql.ObjectConfig{
 		"id": &graphql.Field{
 			Type: graphql.Int,
 		},
-		"market": &graphql.Field{
-			Type: marketType,
-		},
 		"product": &graphql.Field{
 			Type: productType,
 		},
@@ -35,8 +32,20 @@ var shoppingCartTotalType = graphql.NewObject(graphql.ObjectConfig{
 		"amount": &graphql.Field{
 			Type: graphql.Int,
 		},
+		"tax": &graphql.Field{
+			Type: graphql.Float,
+		},
+		"subtotal": &graphql.Field{
+			Type: graphql.Float,
+		},
 		"total": &graphql.Field{
 			Type: graphql.Float,
+		},
+		"marketId": &graphql.Field{
+			Type: graphql.Int,
+		},
+		"market": &graphql.Field{
+			Type: graphql.String,
 		},
 	},
 })
@@ -68,6 +77,15 @@ var shoppingCartListArgumentFields = graphql.FieldConfigArgument{
 	},
 }
 
+var shoppingCartRemoveProductArgumentFields = graphql.FieldConfigArgument{
+	"cartId": &graphql.ArgumentConfig{
+		Type: graphql.NewNonNull(graphql.Int),
+	},
+	"productId": &graphql.ArgumentConfig{
+		Type: graphql.NewNonNull(graphql.Int),
+	},
+}
+
 // ShoppingCartListQuery object
 var ShoppingCartListQuery = &graphql.Field{
 	Type: graphql.NewList(shoppingCartType),
@@ -94,6 +112,32 @@ var AddToShoppingCartMutation = &graphql.Field{
 	Args: shoppingCartArgumentFields,
 	Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 		shoppingCart, err := services.AddProductToShoppingCart(params)
+		if err != nil {
+			return nil, err
+		}
+		return shoppingCart, err
+	},
+}
+
+// UpdateProductShoppingCartMutation object
+var UpdateProductShoppingCartMutation = &graphql.Field{
+	Type: shoppingCartType,
+	Args: shoppingCartRemoveProductArgumentFields,
+	Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+		shoppingCart, err := services.UpdateProductShoppingCart(params)
+		if err != nil {
+			return nil, err
+		}
+		return shoppingCart, err
+	},
+}
+
+// RemoveProductShoppingCartMutation object
+var RemoveProductShoppingCartMutation = &graphql.Field{
+	Type: shoppingCartType,
+	Args: shoppingCartRemoveProductArgumentFields,
+	Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+		shoppingCart, err := services.RemoveProductShoppingCart(params)
 		if err != nil {
 			return nil, err
 		}

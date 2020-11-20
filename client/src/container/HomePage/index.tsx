@@ -49,14 +49,12 @@ const HomePage: React.FC = () => {
                       <Separator>•</Separator>
                       {market.categoryBusiness.name}
                       <Separator>•</Separator>
-                      {market.distance.toFixed(1)}
-                      &nbsp;km
+                      {`${market.distance.toFixed(1)} km`}
                     </MarketInfo>
                     <MarketInfo>
                       {market.deliveryTime}
                       <Separator>•</Separator>
-                      R$&nbsp;
-                      {market.deliveryTax.toFixed(2)}
+                      {`R$ ${market.deliveryTax.toFixed(2)}`}
                     </MarketInfo>
                   </MarketContent>
                 </Card>

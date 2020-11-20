@@ -24,11 +24,5 @@ export interface ShoppingCart {
   id: number
   amount: number
   price: number
-  market: Market
   product: Product
-}
-
-export interface ShoppingCartSum {
-  amount: number
-  total: number
 }
